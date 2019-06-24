@@ -1,0 +1,12 @@
+{
+    "name": "fidilly/gendiff",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fidilly",
+            "email": "fidship@hotmail.com"
+        }
+    ],
+    "require": {}
+}
