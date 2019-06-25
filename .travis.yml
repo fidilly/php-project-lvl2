@@ -1,6 +1,6 @@
 lanquage: php
 php:
-- '7.3.6'
+- '7.1'
 
 install:
 - make install
