@@ -23,3 +23,5 @@ function run()
         echo $k . ': ' . json_encode($v) . PHP_EOL;
     }
 }
+
+?>
