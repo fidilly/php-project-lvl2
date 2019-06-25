@@ -8,5 +8,15 @@
             "email": "fidship@hotmail.com"
         }
     ],
-    "require": {}
+    "require": {
+	"docopt/docopt": "^1.0"
+    },
+    "autoload": {
+	"files": [
+	    "src/Cli.php"
+	]
+    },
+    "bin": [
+	"bin/gendiff"
+    ]
 }
