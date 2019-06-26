@@ -1,9 +1,9 @@
 <?php
 
-namespace GenDiff\Cli;
+namespace Differ\genDiff;
 use Docopt;
 
-function run()
+function genDiff()
 {
     $doc = <<<DOC
 Generate diff
