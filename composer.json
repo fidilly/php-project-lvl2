@@ -19,13 +19,18 @@
     "autoload": {
 	"files": [
 	    "src/genDiff.php"
-	]
+	],
+        "psr-4": {
+            "Differ\\Tests\\": "tests"
+        }
     },
     "bin": [
 	"bin/gendiff"
     ],
     "scripts": {
         "phpcs": "phpcs",
-        "phpcbf": "phpcbf"
+        "phpcbf": "phpcbf",
+        "phpunit": "phpunit",
+        "test": "phpunit tests"
     }
 }
