@@ -20,7 +20,6 @@ class GenDiffTest extends TestCase
 EOD;
 
         $actual = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json");
-#        echo __DIR__ . "/before.json",
         $this->assertEquals($expected, $actual);
     }
 }
