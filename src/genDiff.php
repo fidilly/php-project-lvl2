@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\genDiff;
+namespace Differ;
 use Docopt;
 
 function run()
@@ -20,12 +20,11 @@ DOC;
     
     $args = Docopt::handle($doc, ['version' => 'gendiff 0.0.1']);
     $pathToFile1 = './' . $args['<firstFile>'];
-    $pathToFile2 = './' . $args['<secondFile>']; 
+    $pathToFile2 = './' . $args['<secondFile>'];
     genDiff($pathToFile1, $pathToFile2);
-           
 }
 
-function genDiff($pathToFile1, $pathToFile2)
+function gendiff($pathToFile1, $pathToFile2)
 {
     if (file_exists($pathToFile1) && file_exists($pathToFile2)) {
         $File1Content = json_decode(file_get_contents($pathToFile1));
