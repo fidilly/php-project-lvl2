@@ -54,7 +54,8 @@ function gendiff($pathToFile1, $pathToFile2)
     return $differ;
 }
 
-function boolToString ($value) {
+function boolToString($value)
+{
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
     } else {
