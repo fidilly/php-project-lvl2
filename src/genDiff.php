@@ -50,11 +50,12 @@ function gendiff($pathToFile1, $pathToFile2)
             $combContValue = boolToString($combCont[$key]);
             return $acc . "  + $key: $combContValue\n";
         }
-    }, "{\n") . "}";
+    }, "{\n") . "}\n";
     return $differ;
 }
 
-function boolToString ($value) {
+function boolToString($value)
+{
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
     } else {

@@ -18,6 +18,7 @@ class GenDiffTest extends TestCase
   - proxy: 123.234.53.22
   + verbose: true
 }
+
 EOD;
 
         $actual = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json");
