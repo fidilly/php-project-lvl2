@@ -10,7 +10,7 @@ class GenDiffTest extends TestCase
 {
     public function testGenDiffJson()
     {
-        $expected = <<<EOD
+        $expected1 = <<<EOD
 {
     host: hexlet.io
   + timeout: 20
@@ -22,9 +22,9 @@ class GenDiffTest extends TestCase
 EOD;
 
         $actual1 = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json");
-        $this->assertEquals($expected, $actual1);
+        $this->assertEquals($expected1, $actual1);
         
-        $expected = <<<EOD
+        $expected2 = <<<EOD
 {
     common: {
         setting1: Value 1
@@ -54,7 +54,7 @@ EOD;
 EOD;
 
         $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json");
-        $this->assertEquals($expected, $actual2);
+        $this->assertEquals($expected2, $actual2);
     }
 
     public function testGenDiffYaml()
