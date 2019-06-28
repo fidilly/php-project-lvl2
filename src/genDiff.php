@@ -3,6 +3,7 @@
 namespace Differ;
 use Docopt;
 use function Funct\Collection\union;
+use function Funct\Collection\flatten;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -35,7 +36,7 @@ function gendiff($pathToFile1, $pathToFile2)
     } else {
         return;
     }
-    
+    ###Этот блок будет удален 
     $combCont = union($file1Content, $file2Content);
     $diffCont = array_diff_key($file1Content, $file2Content);
     $differ = array_reduce(array_keys($combCont), function ($acc, $key) use ($combCont, $diffCont, $file1Content) {
@@ -57,6 +58,7 @@ function gendiff($pathToFile1, $pathToFile2)
     }, "{\n") . "}\n";
     return $differ;
 }
+    ###Этот блок будет удален 
 
 function boolToString($value)
 {
@@ -75,7 +77,15 @@ function getContents($pathToFile1, $pathToFile2)
             $jsonContent2 = json_decode(file_get_contents($pathToFile2), true);
             if (json_last_error() === 0) {
                 $file1Content = $jsonContent1;
+    print_r($file1Content);
                 $file2Content = $jsonContent2;
+    print_r($file2Content);
+    $diffCont1 = array_diff_key($file1Content, $file2Content);
+    print_r($diffCont1);
+    $diffCont2 = array_diff_key($file2Content, $file1Content);
+    print_r($diffCont2);
+    $combCont = array_merge($file1Content, $diffCont2);
+    print_r($combCont);
                 return [$file1Content, $file2Content];
             }
         } else {
@@ -87,4 +97,30 @@ function getContents($pathToFile1, $pathToFile2)
             }
         }
     }
+}
+
+function makeDiffAst($contentBefore, $contentAfter)
+{
+    $missAfter = array_diff_key($contentBefore, $contentAfter);
+    $missBefore = array_diff_key($contentAfter, $contentBefore);
+    $withAllKeys = array_merge($contentBefore, $afterDiff);
+
+    $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($contentAfter, $missAfter, $missBefore) {
+        if (array_key_exists($key, $missAfter)) {
+            return ['data' => 'removed', 'key' => $key, 'before' => $missAfter, 'after' => null];
+        } elseif (array_key_exists($key, $missBefore)) {
+            return ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore];
+        } elseif (array_key_exists($key, $contentAfter)) {
+            $iterBefore = $withAllKeys[$key];
+            $iterAfter = $contentAfter[$key];
+            if (is_array($iterBefore) && is_array($iterAfter)) {
+                return makeDiffAst($iterBefore, $iterAfter);
+            } else {
+                $data = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
+                return ['data' => $data, 'key' => $key, 'before' => $iterBefore, 'after' => $iterAfter];
+            }
+        }
+       
+    }, []);
+    return $diffAst;
 }
