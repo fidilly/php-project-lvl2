@@ -7,6 +7,10 @@ Installation and call help
 --------------------------
 [![asciicast](https://asciinema.org/a/253507.svg)](https://asciinema.org/a/253507)
 
-Installation and usage
+Usage with Json files
 ----------------------
-[![asciicast](https://asciinema.org/a/253942.svg)](https://asciinema.org/a/253942)
+[![asciicast](https://asciinema.org/a/254077.svg)](https://asciinema.org/a/254077)
+
+Usage with Yaml files
+---------------------
+[![asciicast](https://asciinema.org/a/254076.svg)](https://asciinema.org/a/254076)
