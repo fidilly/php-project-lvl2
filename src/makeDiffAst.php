@@ -12,17 +12,21 @@ function makeDiffAst($contentBefore, $contentAfter)
 
     $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($withAllKeys, $contentAfter, $missAfter, $missBefore) {
         if (array_key_exists($key, $missAfter)) {
-            return ['data' => 'removed', 'key' => $key, 'before' => $missAfter, 'after' => null];
+            $acc[] = ['data' => 'removed', 'key' => $key, 'before' => $missAfter, 'after' => null];
+            return $acc;
         } elseif (array_key_exists($key, $missBefore)) {
-            return ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore];
+            $acc[] = ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore];
+            return $acc;
         } elseif (array_key_exists($key, $contentAfter)) {
             $iterBefore = $withAllKeys[$key];
             $iterAfter = $contentAfter[$key];
             if (is_array($iterBefore) && is_array($iterAfter)) {
-                return ['data' => 'unchanged', 'key' => $key, 'before' => $iterBefore, 'after' => makeDiffAst($iterBefore, $iterAfter)];
+                $acc[] = ['data' => 'unchanged', 'key' => $key, 'before' => $iterBefore, 'after' => makeDiffAst($iterBefore, $iterAfter)];
+	        	return $acc;
             } else {
                 $data = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
-                return ['data' => $data, 'key' => $key, 'before' => $iterBefore, 'after' => $iterAfter];
+                $acc[] = ['data' => $data, 'key' => $key, 'before' => $iterBefore, 'after' => $iterAfter];
+                return $acc;
             }
         }
     }, []);
