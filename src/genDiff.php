@@ -42,15 +42,6 @@ function gendiff($pathToFile1, $pathToFile2)
     return displayDiffAst($ast);
 }
 
-function boolToString($value)
-{
-    if (is_bool($value)) {
-        return $value ? 'true' : 'false';
-    } else {
-        return $value;
-    }
-}
-
 function getContents($pathToFile1, $pathToFile2)
 {
     if (file_exists($pathToFile1) && file_exists($pathToFile2)) {
