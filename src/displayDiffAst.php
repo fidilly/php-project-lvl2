@@ -4,25 +4,34 @@ namespace Differ\displayDiffAst;
 
 use function Differ\makeDiffAst\makeDiffAst;
 
-function displayDiffAst($ast)
+function displayDiffAst($ast, $depth = 0)
 {
-    $rendering = array_reduce($ast, function ($acc, $item) {
+    $tabs = "\n" . str_repeat('    ', $depth);
+    $rendering = array_reduce($ast, function ($acc, $item) use ($tabs, $depth) {
         $data = $item['data'];
         $key = $item['key'];
-        $before = boolToString($item['before']);
-        $after = boolToString($item['after']);
+        if (is_array($item['before'])) {
+            $before = displayDiffAst($item['before'], $depth + 1);
+        } else {
+            $before = boolToString($item['before']);
+        }
+
+        if (is_array($item['after'])) {
+            $after = displayDiffAst($item['after'], $depth + 1);
+        } else {
+            $after = boolToString($item['after']);
+        }
         
         if ($data === 'unchanged') {
-            return $acc . "    $key: $after\n";
+            return $acc . $tabs . "    $key: $after";
         } elseif ($data === 'changed') {
-            return $acc . "  + $key: $after\n" . "  - $key: $before\n";
+            return $acc . $tabs . "  + $key: $after" . $tabs . "  - $key: $before";
         } elseif ($data === 'added') {
-            return $acc . "  + $key: $after\n";
+            return $acc . $tabs . "  + $key: $after";
         } elseif ($data === 'removed') {
-            return $acc . "  - $key: $before\n";
+            return $acc . $tabs . "  - $key: $before";
         }
-    }, "{\n") . "}\n";
-
+    }, "{") . "$tabs}";
     return $rendering;
 }
 

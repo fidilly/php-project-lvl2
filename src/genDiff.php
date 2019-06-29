@@ -26,7 +26,7 @@ DOC;
     $args = Docopt::handle($doc, ['version' => 'gendiff 0.0.1']);
     $pathToFile1 = './' . $args['<firstFile>'];
     $pathToFile2 = './' . $args['<secondFile>'];
-    echo genDiff($pathToFile1, $pathToFile2);
+    echo genDiff($pathToFile1, $pathToFile2) . PHP_EOL;
 }
 
 function gendiff($pathToFile1, $pathToFile2)
