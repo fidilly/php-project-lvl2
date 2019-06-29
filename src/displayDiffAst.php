@@ -1,34 +1,29 @@
 <?php
 
-namespace Differ\makeDiffAst;
+namespace Differ\displayDiffAst;
 
-use function Differ\getContents;
+use function Differ\makeDiffAst\makeDiffAst;
 
-function makeDiffAst($contentBefore, $contentAfter)
+function displayDiffAst($ast)
 {
-    $missAfter = array_diff_key($contentBefore, $contentAfter);
-    $missBefore = array_diff_key($contentAfter, $contentBefore);
-    $withAllKeys = array_merge($contentBefore, $missBefore);
-
-    $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($withAllKeys, $contentAfter, $missAfter, $missBefore) {
-        if (array_key_exists($key, $missAfter)) {
-            $acc[] = ['data' => 'removed', 'key' => $key, 'before' => $missAfter[$key], 'after' => null];
-            return $acc;
-        } elseif (array_key_exists($key, $missBefore)) {
-            $acc[] = ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore[$key]];
-            return $acc;
-        } elseif (array_key_exists($key, $contentAfter)) {
-            $iterBefore = $withAllKeys[$key];
-            $iterAfter = $contentAfter[$key];
-            if (is_array($iterBefore) && is_array($iterAfter)) {
-                $acc[] = ['data' => 'unchanged', 'key' => $key, 'before' => null, 'after' => makeDiffAst($iterBefore, $iterAfter)];
-	        	return $acc;
-            } else {
-                $data = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
-                $acc[] = ['data' => $data, 'key' => $key, 'before' => $iterBefore, 'after' => $iterAfter];
-                return $acc;
-            }
+    $rendering = array_reduce($ast, function ($acc, $item) {
+        $data = $item['data'];
+        $key = $item['key'];
+        $before = $item['before'];
+        $after = $item['after'];
+        $afterText = "$key: $after";
+        $beforeText = "$key: $before";
+        
+        if ($data === 'unchanged') {
+            return $acc . "    $afterText\n";
+        } elseif ($data === 'changed') {
+            return $acc . "  + $afterText\n" . "  - $beforeText\n";
+        } elseif ($data === 'added') {
+            return $acc . "  + $afterText\n";
+        } elseif ($data === 'removed') {
+            return $acc . "  - $beforeText\n";
         }
-    }, []);
-    return $diffAst;
+    }, "{\n") . "}\n";
+
+    return $rendering;
 }
