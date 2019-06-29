@@ -18,12 +18,11 @@ class GenDiffTest extends TestCase
   - proxy: 123.234.53.22
   + verbose: true
 }
-
 EOD;
 
         $actual1 = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json");
         $this->assertEquals($expected1, $actual1);
-        
+
         $expected2 = <<<EOD
 {
     common: {
@@ -50,13 +49,12 @@ EOD;
         fee: 100500
     }
 }
-
 EOD;
 
         $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json");
         $this->assertEquals($expected2, $actual2);
     }
-
+    
     public function testGenDiffYaml()
     {
         $expected = <<<EOD
@@ -67,18 +65,9 @@ EOD;
   - proxy: 123.234.53.22
   + verbose: true
 }
-
 EOD;
 
         $actual = genDiff(__DIR__ . "/before.yaml", __DIR__ . "/after.yaml");
         $this->assertEquals($expected, $actual);
-    }
-
-
-    public function testBoolToString()
-    {
-        $this->assertEquals('true', boolToString(true));
-        $this->assertEquals('false', boolToString(false));
-        $this->assertEquals('value1', boolToString('value1'));
     }
 }
