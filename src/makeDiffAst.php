@@ -12,10 +12,10 @@ function makeDiffAst($contentBefore, $contentAfter)
 
     $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($withAllKeys, $contentAfter, $missAfter, $missBefore) {
         if (array_key_exists($key, $missAfter)) {
-            $acc[] = ['data' => 'removed', 'key' => $key, 'before' => $missAfter, 'after' => null];
+            $acc[] = ['data' => 'removed', 'key' => $key, 'before' => $missAfter[$key], 'after' => null];
             return $acc;
         } elseif (array_key_exists($key, $missBefore)) {
-            $acc[] = ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore];
+            $acc[] = ['data' => 'added', 'key' => $key, 'before' => null, 'after' => $missBefore[$key]];
             return $acc;
         } elseif (array_key_exists($key, $contentAfter)) {
             $iterBefore = $withAllKeys[$key];
