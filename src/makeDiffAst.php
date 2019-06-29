@@ -1,15 +1,16 @@
 <?php
 
 namespace Differ\makeDiffAst;
+
 use function Differ\getContents;
 
 function makeDiffAst($contentBefore, $contentAfter)
 {
     $missAfter = array_diff_key($contentBefore, $contentAfter);
     $missBefore = array_diff_key($contentAfter, $contentBefore);
-    $withAllKeys = array_merge($contentBefore, $afterDiff);
+    $withAllKeys = array_merge($contentBefore, $missBefore);
 
-    $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($contentAfter, $missAfter, $missBefore) {
+    $diffAst = array_reduce(array_keys($withAllKeys), function ($acc, $key) use ($withAllKeys, $contentAfter, $missAfter, $missBefore) {
         if (array_key_exists($key, $missAfter)) {
             return ['data' => 'removed', 'key' => $key, 'before' => $missAfter, 'after' => null];
         } elseif (array_key_exists($key, $missBefore)) {
