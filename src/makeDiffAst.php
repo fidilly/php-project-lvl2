@@ -10,8 +10,6 @@ function makeDiffAst($contentBefore, $contentAfter)
     $missBefore = array_diff_key($contentAfter, $contentBefore);
     $allKeys = array_merge($contentBefore, $missBefore);
 
-    $diffAst = array_reduce(array_keys($allKeys), $makeDiff, []);
-
     $makeDiff = function ($acc, $key) use ($allKeys, $contentAfter, $missAfter, $missBefore) {
         if (array_key_exists($key, $missAfter)) {
             if (is_array($missAfter[$key])) {
@@ -59,5 +57,6 @@ function makeDiffAst($contentBefore, $contentAfter)
         }
     };
 
+    $diffAst = array_reduce(array_keys($allKeys), $makeDiff, []);
     return $diffAst;
 }
