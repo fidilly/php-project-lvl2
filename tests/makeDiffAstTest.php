@@ -57,6 +57,21 @@ class MakeDiffAstTest extends TestCase
                       ['data' => 'added', 'key' => 'verbose', 'before' => null, 'after' => true]];
         $actual6 = makeDiffAst($array11, $array12);
         $this->assertEquals($expected6, $actual6);
- 
+
+        $array13 = ['key1' => ['key1' => 'value1', 'key2' => 'value2'], 'key2' => ['key1' => 'value1', 'key2' => 'value2'], 'key3' => ['key1' => 'value1', 'key3' => 'value3', 'key4' => 'value']];
+        $array14 = ['key1' => ['key1' => 'value3', 'key2' => 'value2'], 'key2' => ['key1' => 'value1', 'key2' => 'value2'], 'key3' => ['key1' => 'value3', 'key2' => 'value2', 'key4' => 'value']];
+        $expected7 = [['data' => 'unchanged', 'key' => 'key1', 'before' => null, 
+                                                               'after' => [['data' => 'changed', 'key' => 'key1', 'before' => 'value1', 'after' => 'value3'],
+                                                                            ['data' => 'unchanged', 'key' => 'key2', 'before' => 'value2', 'after' => 'value2']]], 
+                      ['data' => 'unchanged', 'key' => 'key2', 'before' => null,
+                                                               'after' => [['data' => 'unchanged', 'key' => 'key1', 'before' => 'value1', 'after' => 'value1'], 
+                                                                          ['data' => 'unchanged', 'key' => 'key2', 'before' => 'value2', 'after' => 'value2']]],
+                      ['data' => 'unchanged', 'key' => 'key3', 'before' => null,
+                                                               'after' => [['data' => 'changed', 'key' => 'key1', 'before' => 'value1', 'after' => 'value3'],
+                                                                           ['data' => 'removed', 'key' => 'key3', 'before' => 'value3', 'after' => null],
+                                                                           ['data' => 'unchanged', 'key' => 'key4', 'before' => 'value', 'after' => 'value'],
+                                                                           ['data' => 'added', 'key' => 'key2', 'before' => null, 'after' => 'value2']]]];
+        $actual7 = makeDiffAst($array13, $array14);
+        $this->assertEquals($expected1, $actual1);
     }
 }
