@@ -41,7 +41,7 @@ function makeDiffAst($contentBefore, $contentAfter)
             $iterBefore = $allKeys[$key];
             $iterAfter = $contentAfter[$key];
             if (is_array($iterBefore) && is_array($iterAfter)) {
-                $acc[] = ['data' => 'unchanged',
+                $acc[] = ['data' => 'nested',
                           'key' => $key,
                           'before' => null,
                           'after' => makeDiffAst($iterBefore, $iterAfter)];
