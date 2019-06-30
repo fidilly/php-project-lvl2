@@ -52,6 +52,19 @@ EOD;
 EOD;
         $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "pretty");
         $this->assertEquals($expected2, $actual2);
+
+        $expected3 = <<<EOD
+Property 'common.setting2' was removed
+Property 'common.setting6' was removed
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: 'complex value'
+Property 'group1.baz' was changed. From 'bas' to 'bars'
+Property 'group2' was removed
+Property 'group3' was added with value: 'complex value'
+EOD;
+
+        $actual3 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plane");
+        $this->assertEquals($expected3, $actual3);
     }
     
     public function testGenDiffYaml()
