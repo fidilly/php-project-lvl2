@@ -61,6 +61,7 @@ Property 'common.setting5' was added with value: 'complex value'
 Property 'group1.baz' was changed. From 'bas' to 'bars'
 Property 'group2' was removed
 Property 'group3' was added with value: 'complex value'
+
 EOD;
 
         $actual3 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plain");
