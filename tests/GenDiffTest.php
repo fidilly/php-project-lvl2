@@ -20,7 +20,7 @@ class GenDiffTest extends TestCase
 }
 EOD;
 
-        $actual1 = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json");
+        $actual1 = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json", "pretty");
         $this->assertEquals($expected1, $actual1);
 
         $expected2 = <<<EOD
@@ -50,8 +50,7 @@ EOD;
     }
 }
 EOD;
-
-        $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json");
+        $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "pretty");
         $this->assertEquals($expected2, $actual2);
     }
     
@@ -67,7 +66,7 @@ EOD;
 }
 EOD;
 
-        $actual = genDiff(__DIR__ . "/before.yaml", __DIR__ . "/after.yaml");
+        $actual = genDiff(__DIR__ . "/before.yaml", __DIR__ . "/after.yaml", 'pretty');
         $this->assertEquals($expected, $actual);
     }
 }
