@@ -63,7 +63,7 @@ Property 'group2' was removed
 Property 'group3' was added with value: 'complex value'
 EOD;
 
-        $actual3 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plane");
+        $actual3 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plain");
         $this->assertEquals($expected3, $actual3);
     }
     
