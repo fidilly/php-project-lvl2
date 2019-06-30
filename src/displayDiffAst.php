@@ -4,20 +4,20 @@ namespace Differ\displayDiffAst;
 
 use function Differ\makeDiffAst\makeDiffAst;
 
-function displayDiffAst($ast, $depth = 0)
+function displayDiffAst($ast, $format, $depth = 0)
 {
     $tabs = "\n" . str_repeat('    ', $depth);
-    $rendering = array_reduce($ast, function ($acc, $item) use ($tabs, $depth) {
+    $rendering = array_reduce($ast, function ($acc, $item) use ($tabs, $depth, $format) {
         $data = $item['data'];
         $key = $item['key'];
         if (is_array($item['before'])) {
-            $before = displayDiffAst($item['before'], $depth + 1);
+            $before = displayDiffAst($item['before'], $format, $depth + 1);
         } else {
             $before = boolToString($item['before']);
         }
 
         if (is_array($item['after'])) {
-            $after = displayDiffAst($item['after'], $depth + 1);
+            $after = displayDiffAst($item['after'], $format, $depth + 1);
         } else {
             $after = boolToString($item['after']);
         }
