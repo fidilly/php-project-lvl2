@@ -39,11 +39,7 @@ function boolToString($value)
 function makeDiffFormat($format, $depth, $data, $key, $before, $after)
 {
     if ($format === 'plain') {
-        if ($depth === 0) {
-            $text = "Property '";
-        } else {
-            $text = '';
-        }
+        $text = $depth === 0 ? "Property '" : '';
         if ($data == 'nested') {
             $filtered = array_filter(explode("\n", $after), function ($item) {
                 return !empty($item);
@@ -51,21 +47,18 @@ function makeDiffFormat($format, $depth, $data, $key, $before, $after)
             $glue = implode("\n", array_map(function ($item) use ($text, $key) {
                 return $text . "$key." . $item;
             }, $filtered));
-            
             return $glue . PHP_EOL;
-        } else {
-            if ($data == "unchanged") {
-                return;
-            } elseif ($data == 'changed') {
-                return $text . "$key' was $data. From '$before' to '$after'\n";
-            } elseif ($data == 'removed') {
-                return $text . "$key' was $data\n";
-            } elseif ($data == 'added') {
-                if ($after == '') {
-                    return $text . "$key' was $data with value: 'complex value'\n";
-                }
-                return $text . "$key' was $data with value: '$after'\n";
+        } elseif ($data == "unchanged") {
+            return;
+        } elseif ($data == 'changed') {
+            return $text . "$key' was $data. From '$before' to '$after'\n";
+        } elseif ($data == 'removed') {
+            return $text . "$key' was $data\n";
+        } elseif ($data == 'added') {
+            if ($after == '') {
+                return $text . "$key' was $data with value: 'complex value'\n";
             }
+            return $text . "$key' was $data with value: '$after'\n";
         }
     } else {
         $tabs = "\n" . str_repeat('    ', $depth);
