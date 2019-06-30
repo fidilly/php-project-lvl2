@@ -23,13 +23,14 @@ Options:
     -v --version      Show version.
 DOC;
     
-    $args = Docopt::handle($doc, ['version' => 'gendiff 0.0.1']);
+    $args = Docopt::handle($doc, ['version' => 'gendiff 1.0.0']);
     $pathToFile1 = './' . $args['<firstFile>'];
     $pathToFile2 = './' . $args['<secondFile>'];
-    echo genDiff($pathToFile1, $pathToFile2) . PHP_EOL;
+    $format = $args['--format'];
+    echo genDiff($pathToFile1, $pathToFile2, $format) . PHP_EOL;
 }
 
-function gendiff($pathToFile1, $pathToFile2)
+function gendiff($pathToFile1, $pathToFile2, $format)
 {
     $content = getContents($pathToFile1, $pathToFile2);
     if (!is_null($content)) {
@@ -39,7 +40,7 @@ function gendiff($pathToFile1, $pathToFile2)
     }
 
     $ast = makeDiffAst($file1Content, $file2Content);
-    return displayDiffAst($ast);
+    return displayDiffAst($ast, $format);
 }
 
 function getContents($pathToFile1, $pathToFile2)
