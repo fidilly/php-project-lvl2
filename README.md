@@ -14,3 +14,7 @@ Usage
 [![asciicast](https://asciinema.org/a/254076.svg)](https://asciinema.org/a/254076)
 
 [![asciicast](https://asciinema.org/a/254289.svg)](https://asciinema.org/a/254289)
+
+Usage with output format
+-----------------------
+[![asciicast](https://asciinema.org/a/254412.svg)](https://asciinema.org/a/254412)
