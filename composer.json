@@ -1,6 +1,6 @@
 {
     "name": "fidilly/gendiff",
-    "description": "This library calculates and shows the difference between json or yaml file formats..",
+    "description": "This library calculates and shows the difference between json or yaml file formats.",
     "type": "library",
     "license": "MIT",
     "keywords": ["difference", "json", "yaml", "yml"],
