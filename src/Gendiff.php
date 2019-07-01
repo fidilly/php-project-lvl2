@@ -37,6 +37,7 @@ function getContents($pathToFile1, $pathToFile2)
                 $file2Content = Yaml::parseFile($pathToFile2);
                 return [$file1Content, $file2Content];
             } catch (ParseException $exception) {
+                echo 'Invalid file path';
             }
         }
     }
