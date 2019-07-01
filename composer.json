@@ -30,7 +30,7 @@
         }
     },
     "bin": [
-	"bin/gendiff"
+	    "bin/gendiff"
     ],
     "scripts": {
         "phpcs": "phpcs",
