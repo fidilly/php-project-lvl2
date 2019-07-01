@@ -1,34 +1,11 @@
 <?php
 
-namespace Differ;
-use Docopt;
-use function Funct\Collection\union;
+namespace Differ\Gendiff;
+
 use function Differ\MakeDiffAst\makeDiffAst;
 use function Differ\DisplayDiffAst\displayDiffAst;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
-
-function run()
-{
-    $doc = <<<DOC
-Generate diff
-
-Usage:
-    gendiff (-h|--help)
-    gendiff [--format <fmt>] <firstFile> <secondFile>
-
-Options:
-    -h --help         Show this screen.
-    --format <fmt>    Report format [default: pretty].
-    -v --version      Show version.
-DOC;
-    
-    $args = Docopt::handle($doc, ['version' => 'gendiff 1.1.0']);
-    $pathToFile1 = './' . $args['<firstFile>'];
-    $pathToFile2 = './' . $args['<secondFile>'];
-    $format = $args['--format'];
-    echo genDiff($pathToFile1, $pathToFile2, $format) . PHP_EOL;
-}
 
 function gendiff($pathToFile1, $pathToFile2, $format)
 {

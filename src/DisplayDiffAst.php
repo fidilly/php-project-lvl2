@@ -2,12 +2,13 @@
 
 namespace Differ\DisplayDiffAst;
 
-use function Differ\MakeDiffAst\makeDiffAst;
-
 function displayDiffAst($ast, $format, $depth = 0)
 {
-    $getTags = "\Differ\Renderers\\$format\\getTags";
     $render = "\Differ\Renderers\\$format\\render";
+    if ($format === 'json') {
+        return $render($ast);
+    }
+    $getTags = "\Differ\Renderers\\$format\\getTags";
     [$openTag, $closeTag] = $getTags($format, $depth);
     $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $format, $render) {
         $data = $item['data'];

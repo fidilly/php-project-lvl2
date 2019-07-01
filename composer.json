@@ -1,7 +1,9 @@
 {
     "name": "fidilly/gendiff",
+    "description": "This program calculates and shows the difference between json or yaml file formats.",
     "type": "library",
     "license": "MIT",
+    "keywords": ["difference", "json", "yaml", "yml"],
     "authors": [
         {
             "name": "fidilly",
@@ -9,8 +11,7 @@
         }
     ],
     "require": {
-	"docopt/docopt": "^1.0",
-        "funct/funct": "^1.5",
+	    "docopt/docopt": "^1.0",
         "symfony/yaml": "^4.3"
     },
     "require-dev": {
@@ -18,13 +19,15 @@
         "phpunit/phpunit": "^8.2"
     },
     "autoload": {
-	"files": [
-        "src/GenDiff.php",
-        "src/MakeDiffAst.php",
-        "src/DisplayDiffAst.php",
-        "src/Renderers/pretty.php",
-        "src/Renderers/plain.php"
-	],
+        "files": [
+            "src/Cli.php",
+            "src/Gendiff.php",
+            "src/MakeDiffAst.php",
+            "src/DisplayDiffAst.php",
+            "src/Renderers/pretty.php",
+            "src/Renderers/plain.php",
+            "src/Renderers/json.php"
+        ],
         "psr-4": {
             "Differ\\Tests\\": "tests"
         }

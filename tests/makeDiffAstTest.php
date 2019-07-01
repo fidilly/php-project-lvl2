@@ -1,9 +1,9 @@
 <?php
 
-namespace Differ\Tests;
+namespace Differ\Tests\DiffAstTest;
 
 use function \Differ\MakeDiffAst\makeDiffAst;
-use function \Differ\getContents;
+use function \Differ\Gendiff\getContents;
 use PHPUnit\Framework\TestCase;
 
 class MakeDiffAstTest extends TestCase

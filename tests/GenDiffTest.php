@@ -1,9 +1,8 @@
 <?php
 
-namespace Differ\Tests;
+namespace Differ\Tests\GenDiffTest;
 
-use function \Differ\genDiff;
-use function \Differ\boolToString;
+use function \Differ\Gendiff\gendiff;
 use PHPUnit\Framework\TestCase;
 
 class GenDiffTest extends TestCase
@@ -20,7 +19,7 @@ class GenDiffTest extends TestCase
 }
 EOD;
 
-        $actual1 = genDiff(__DIR__ . "/before.json", __DIR__ . "/after.json", "pretty");
+        $actual1 = gendiff(__DIR__ . "/before.json", __DIR__ . "/after.json", "pretty");
         $this->assertEquals($expected1, $actual1);
 
         $expected2 = <<<EOD
@@ -50,7 +49,7 @@ EOD;
     }
 }
 EOD;
-        $actual2 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "pretty");
+        $actual2 = gendiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "pretty");
         $this->assertEquals($expected2, $actual2);
 
         $expected3 = <<<EOD
@@ -64,7 +63,7 @@ Property 'group3' was added with value: 'complex value'
 
 EOD;
 
-        $actual3 = genDiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plain");
+        $actual3 = gendiff(__DIR__ . "/nestedBefore.json", __DIR__ . "/nestedAfter.json", "plain");
         $this->assertEquals($expected3, $actual3);
     }
     
@@ -80,7 +79,7 @@ EOD;
 }
 EOD;
 
-        $actual = genDiff(__DIR__ . "/before.yaml", __DIR__ . "/after.yaml", 'pretty');
+        $actual = gendiff(__DIR__ . "/before.yaml", __DIR__ . "/after.yaml", 'pretty');
         $this->assertEquals($expected, $actual);
     }
 }
