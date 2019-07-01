@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\makeDiffAst;
+namespace Differ\MakeDiffAst;
 
 use function Differ\getContents;
 

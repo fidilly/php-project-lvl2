@@ -3,8 +3,8 @@
 namespace Differ;
 use Docopt;
 use function Funct\Collection\union;
-use function Differ\makeDiffAst\makeDiffAst;
-use function Differ\displayDiffAst\displayDiffAst;
+use function Differ\MakeDiffAst\makeDiffAst;
+use function Differ\DisplayDiffAst\displayDiffAst;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 

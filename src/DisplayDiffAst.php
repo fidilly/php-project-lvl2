@@ -1,8 +1,8 @@
 <?php
 
-namespace Differ\displayDiffAst;
+namespace Differ\DisplayDiffAst;
 
-use function Differ\makeDiffAst\makeDiffAst;
+use function Differ\MakeDiffAst\makeDiffAst;
 
 function displayDiffAst($ast, $format, $depth = 0)
 {

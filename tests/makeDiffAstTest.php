@@ -2,7 +2,7 @@
 
 namespace Differ\Tests;
 
-use function \Differ\makeDiffAst\makeDiffAst;
+use function \Differ\MakeDiffAst\makeDiffAst;
 use function \Differ\getContents;
 use PHPUnit\Framework\TestCase;
 
