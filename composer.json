@@ -21,7 +21,9 @@
 	"files": [
         "src/GenDiff.php",
         "src/MakeDiffAst.php",
-        "src/DisplayDiffAst.php"
+        "src/DisplayDiffAst.php",
+        "src/Renderers/pretty.php",
+        "src/Renderers/plain.php"
 	],
         "psr-4": {
             "Differ\\Tests\\": "tests"
