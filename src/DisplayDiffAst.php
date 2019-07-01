@@ -7,8 +7,9 @@ use function Differ\MakeDiffAst\makeDiffAst;
 function displayDiffAst($ast, $format, $depth = 0)
 {
     $getTags = "\Differ\Renderers\\$format\\getTags";
+    $render = "\Differ\Renderers\\$format\\render";
     [$openTag, $closeTag] = $getTags($format, $depth);
-    $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $format) {
+    $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $format, $render) {
         $data = $item['data'];
         $key = $item['key'];
         if (is_array($item['before'])) {
@@ -23,7 +24,6 @@ function displayDiffAst($ast, $format, $depth = 0)
             $after = boolToString($item['after']);
         }
         
-        $render = "\Differ\Renderers\\$format\\render";
         return $acc . $render($format, $depth, $data, $key, $before, $after);
     }, "");
     return "$openTag" . $rendering . "$closeTag";
