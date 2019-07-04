@@ -23,7 +23,7 @@
             "src/Cli.php",
             "src/Gendiff.php",
             "src/MakeDiffAst.php",
-            "src/DisplayDiffAst.php",
+            "src/DisplayDiff.php",
             "src/Renderers/pretty.php",
             "src/Renderers/plain.php",
             "src/Renderers/json.php"

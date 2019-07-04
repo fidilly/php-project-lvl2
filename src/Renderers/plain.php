@@ -2,10 +2,10 @@
 
 namespace Differ\Renderers\plain;
 
-function render($format, $depth, $data, $key, $before, $after)
+function render($format, $depth, $type, $key, $before, $after)
 {
     $text = $depth === 0 ? "Property '" : '';
-    if ($data == 'nested') {
+    if ($type == 'nested') {
         $filtered = array_filter(explode("\n", $after), function ($item) {
             return !empty($item);
         });
@@ -13,17 +13,17 @@ function render($format, $depth, $data, $key, $before, $after)
             return $text . "$key." . $item;
         }, $filtered));
         return $glue . PHP_EOL;
-    } elseif ($data == "unchanged") {
+    } elseif ($type == "unchanged") {
         return;
-    } elseif ($data == 'changed') {
-        return $text . "$key' was $data. From '$before' to '$after'\n";
-    } elseif ($data == 'removed') {
-        return $text . "$key' was $data\n";
-    } elseif ($data == 'added') {
+    } elseif ($type == 'changed') {
+        return $text . "$key' was $type. From '$before' to '$after'\n";
+    } elseif ($type == 'removed') {
+        return $text . "$key' was $type\n";
+    } elseif ($type == 'added') {
         if ($after == '') {
-            return $text . "$key' was $data with value: 'complex value'\n";
+            return $text . "$key' was $type with value: 'complex value'\n";
         }
-        return $text . "$key' was $data with value: '$after'\n";
+        return $text . "$key' was $type with value: '$after'\n";
     }
 }
 

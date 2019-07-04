@@ -13,26 +13,26 @@ function makeDiffAst($contentBefore, $contentAfter)
     $makeDiff = function ($acc, $key) use ($allKeys, $contentAfter, $missAfter, $missBefore) {
         if (array_key_exists($key, $missAfter)) {
             if (is_array($missAfter[$key])) {
-                $acc[] = ['data' => 'removed',
+                $acc[] = ['type' => 'removed',
                           'key' => $key,
                           'before' => makeDiffAst($missAfter[$key], $missAfter[$key]),
                           'after' => null];
                 return $acc;
             }
-            $acc[] = ['data' => 'removed',
+            $acc[] = ['type' => 'removed',
                       'key' => $key,
                       'before' => $missAfter[$key],
                       'after' => null];
             return $acc;
         } elseif (array_key_exists($key, $missBefore)) {
             if (is_array($missBefore[$key])) {
-                $acc[] = ['data' => 'added',
+                $acc[] = ['type' => 'added',
                           'key' => $key,
                           'before' => null,
                           'after' => makeDiffAst($missBefore[$key], $missBefore[$key])];
                 return $acc;
             }
-            $acc[] = ['data' => 'added',
+            $acc[] = ['type' => 'added',
                       'key' => $key,
                       'before' => null,
                       'after' => $missBefore[$key]];
@@ -41,14 +41,14 @@ function makeDiffAst($contentBefore, $contentAfter)
             $iterBefore = $allKeys[$key];
             $iterAfter = $contentAfter[$key];
             if (is_array($iterBefore) && is_array($iterAfter)) {
-                $acc[] = ['data' => 'nested',
+                $acc[] = ['type' => 'nested',
                           'key' => $key,
                           'before' => null,
                           'after' => makeDiffAst($iterBefore, $iterAfter)];
                 return $acc;
             } else {
-                $data = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
-                $acc[] = ['data' => $data,
+                $type = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
+                $acc[] = ['type' => $type,
                           'key' => $key,
                           'before' => $iterBefore,
                           'after' => $iterAfter];

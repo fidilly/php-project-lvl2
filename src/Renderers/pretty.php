@@ -2,16 +2,16 @@
 
 namespace Differ\Renderers\pretty;
 
-function render($format, $depth, $data, $key, $before, $after)
+function render($format, $depth, $type, $key, $before, $after)
 {
     $tabs = "\n" . str_repeat('    ', $depth);
-    if ($data === 'unchanged' || $data === 'nested') {
+    if ($type === 'unchanged' || $type === 'nested') {
         return $tabs . "    $key: $after";
-    } elseif ($data === 'changed') {
+    } elseif ($type === 'changed') {
         return $tabs . "  + $key: $after" . $tabs . "  - $key: $before";
-    } elseif ($data === 'added') {
+    } elseif ($type === 'added') {
         return $tabs . "  + $key: $after";
-    } elseif ($data === 'removed') {
+    } elseif ($type === 'removed') {
         return $tabs . "  - $key: $before";
     }
 }

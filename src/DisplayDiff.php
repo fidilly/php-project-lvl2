@@ -1,8 +1,8 @@
 <?php
 
-namespace Differ\DisplayDiffAst;
+namespace Differ\DisplayDiff;
 
-function displayDiffAst($ast, $format, $depth = 0)
+function displayDiff($ast, $format, $depth = 0)
 {
     $render = "\Differ\Renderers\\$format\\render";
     if ($format === 'json') {
@@ -11,21 +11,21 @@ function displayDiffAst($ast, $format, $depth = 0)
     $getTags = "\Differ\Renderers\\$format\\getTags";
     [$openTag, $closeTag] = $getTags($format, $depth);
     $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $format, $render) {
-        $data = $item['data'];
+        $type = $item['type'];
         $key = $item['key'];
         if (is_array($item['before'])) {
-            $before = displayDiffAst($item['before'], $format, $depth + 1);
+            $before = displayDiff($item['before'], $format, $depth + 1);
         } else {
             $before = boolToString($item['before']);
         }
 
         if (is_array($item['after'])) {
-            $after = displayDiffAst($item['after'], $format, $depth + 1);
+            $after = displayDiff($item['after'], $format, $depth + 1);
         } else {
             $after = boolToString($item['after']);
         }
         
-        return $acc . $render($format, $depth, $data, $key, $before, $after);
+        return $acc . $render($format, $depth, $type, $key, $before, $after);
     }, "");
     return "$openTag" . $rendering . "$closeTag";
 }
