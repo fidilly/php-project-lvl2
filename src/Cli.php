@@ -20,8 +20,8 @@ Options:
 DOC;
     
     $args = Docopt::handle($doc, ['version' => 'gendiff 1.2.2']);
-    $pathToFile1 = './' . $args['<firstFile>'];
-    $pathToFile2 = './' . $args['<secondFile>'];
+    $pathToFile1 = realpath($args['<firstFile>']);
+    $pathToFile2 = realpath($args['<secondFile>']);
     $format = $args['--format'];
     echo gendiff($pathToFile1, $pathToFile2, $format) . PHP_EOL;
 }
