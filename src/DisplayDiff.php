@@ -2,32 +2,53 @@
 
 namespace Differ\DisplayDiff;
 
+
 function displayDiff($ast, $format, $depth = 0)
 {
-    $render = "\Differ\Renderers\\$format\\render";
-    if ($format === 'json') {
-        return $render($ast);
-    }
-    $getTags = "\Differ\Renderers\\$format\\getTags";
-    [$openTag, $closeTag] = $getTags($format, $depth);
-    $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $format, $render) {
+    $tabs = "\n" . str_repeat('    ', $depth);
+    $rendering = array_reduce($ast, function ($acc, $item) use ($tabs, $depth, $format) {
         $type = $item['type'];
         $key = $item['key'];
-        if (is_array($item['before'])) {
-            $before = displayDiff($item['before'], $format, $depth + 1);
-        } else {
-            $before = boolToString($item['before']);
-        }
+        $before = $item['before'];
+        $after = $item['after'];
 
-        if (is_array($item['after'])) {
+        if ($type === 'nested') {
             $after = displayDiff($item['after'], $format, $depth + 1);
-        } else {
-            $after = boolToString($item['after']);
+            return $acc . $tabs . "    $key: $after";
+        } elseif ($type === 'unchanged') {
+            $after = renderValue($after, $depth);
+            return $acc . $tabs . "    $key: $after";
+        } elseif ($type === 'changed') {
+            $before = renderValue($before, $depth);
+            $after = renderValue($after, $depth);
+            return $acc . $tabs . "  + $key: $after" . $tabs . "  - $key: $before";
+        } elseif ($type === 'added') {
+            $after = renderValue($after, $depth);
+            return $acc . $tabs . "  + $key: $after";
+        } elseif ($type === 'removed') {
+            $before = renderValue($before, $depth);
+            return $acc . $tabs . "  - $key: $before";
         }
-        
-        return $acc . $render($format, $depth, $type, $key, $before, $after);
-    }, "");
-    return "$openTag" . $rendering . "$closeTag";
+    }, "{") . "$tabs}";
+    return $rendering;
+}
+
+function renderValue ($value, $depth)
+{
+    if (is_array($value)) {
+        $tabs = "\n" . str_repeat('    ', $depth + 1);
+        $array = $value;
+        $reduced = array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs) {
+            if (is_array($array[$key])) {
+                return renderValue($array[$key], $depth + 1);
+            } else {
+                return $acc . $tabs . "    $key: " . boolToString($array[$key]);
+            }
+        }, "{"); 
+        return $reduced . "$tabs}";
+    } else {
+        return boolToString($value);
+    } 
 }
 
 function boolToString($value)
