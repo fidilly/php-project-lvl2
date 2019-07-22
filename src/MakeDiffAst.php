@@ -4,59 +4,45 @@ namespace Differ\MakeDiffAst;
 
 use function Differ\getContents;
 
-function makeDiffAst($contentBefore, $contentAfter)
+function makeDiffAst($ContentBeforeChange, $ContentAfterChange)
 {
-    $missAfter = array_diff_key($contentBefore, $contentAfter);
-    $missBefore = array_diff_key($contentAfter, $contentBefore);
-    $allKeys = array_merge($contentBefore, $missBefore);
+    $removedContent = array_diff_key($ContentBeforeChange, $ContentAfterChange);
+    $addedContent = array_diff_key($ContentAfterChange, $ContentBeforeChange);
+    $overallContent = array_merge($ContentBeforeChange, $addedContent);
 
-    $makeDiff = function ($acc, $key) use ($allKeys, $contentAfter, $missAfter, $missBefore) {
-        if (array_key_exists($key, $missAfter)) {
-            if (is_array($missAfter[$key])) {
-                $acc[] = ['type' => 'removed',
-                          'key' => $key,
-                          'before' => makeDiffAst($missAfter[$key], $missAfter[$key]),
-                          'after' => null];
-                return $acc;
-            }
+    $makeDiff = function ($acc, $key) use ($overallContent, $ContentAfterChange, $removedContent, $addedContent) {
+        if (array_key_exists($key, $removedContent)) {
             $acc[] = ['type' => 'removed',
                       'key' => $key,
-                      'before' => $missAfter[$key],
+                      'before' => $removedContent[$key],
                       'after' => null];
             return $acc;
-        } elseif (array_key_exists($key, $missBefore)) {
-            if (is_array($missBefore[$key])) {
-                $acc[] = ['type' => 'added',
-                          'key' => $key,
-                          'before' => null,
-                          'after' => makeDiffAst($missBefore[$key], $missBefore[$key])];
-                return $acc;
-            }
+        } elseif (array_key_exists($key, $addedContent)) {
             $acc[] = ['type' => 'added',
                       'key' => $key,
                       'before' => null,
-                      'after' => $missBefore[$key]];
+                      'after' => $addedContent[$key]];
             return $acc;
-        } elseif (array_key_exists($key, $contentAfter)) {
-            $iterBefore = $allKeys[$key];
-            $iterAfter = $contentAfter[$key];
-            if (is_array($iterBefore) && is_array($iterAfter)) {
+        } elseif (array_key_exists($key, $ContentAfterChange)) {
+            $before = $overallContent[$key];
+            $after = $ContentAfterChange[$key];
+            if (is_array($before) && is_array($after)) {
                 $acc[] = ['type' => 'nested',
                           'key' => $key,
                           'before' => null,
-                          'after' => makeDiffAst($iterBefore, $iterAfter)];
+                          'after' => makeDiffAst($before, $after)];
                 return $acc;
             } else {
-                $type = ($iterBefore === $iterAfter) ? 'unchanged' : 'changed';
+                $type = ($before === $after) ? 'unchanged' : 'changed';
                 $acc[] = ['type' => $type,
                           'key' => $key,
-                          'before' => $iterBefore,
-                          'after' => $iterAfter];
+                          'before' => $before,
+                          'after' => $after];
                 return $acc;
             }
         }
     };
 
-    $diffAst = array_reduce(array_keys($allKeys), $makeDiff, []);
+    $diffAst = array_reduce(array_keys($overallContent), $makeDiff, []);
     return $diffAst;
 }
