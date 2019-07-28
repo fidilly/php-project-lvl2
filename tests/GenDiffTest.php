@@ -9,7 +9,7 @@ class GenDiffTest extends TestCase
 {
     public function testGenDiffJson()
     {
-        $expected1 = file_get_contents(__DIR__ . "/Fixtures/expectedFlatPlain");
+        $expected1 = file_get_contents(__DIR__ . "/Fixtures/expectedFlatPretty");
         $actual1 = gendiff(__DIR__ . "/Fixtures/before.json", __DIR__ . "/Fixtures/after.json", "pretty");
         $this->assertEquals($expected1, $actual1);
 
@@ -24,7 +24,7 @@ class GenDiffTest extends TestCase
     
     public function testGenDiffYaml()
     {
-        $expected = file_get_contents(__DIR__ . "/Fixtures/expectedFlatPlain");
+        $expected = file_get_contents(__DIR__ . "/Fixtures/expectedFlatPretty");
         $actual = gendiff(__DIR__ . "/Fixtures/before.yaml", __DIR__ . "/Fixtures/after.yaml", 'pretty');
         $this->assertEquals($expected, $actual);
     }

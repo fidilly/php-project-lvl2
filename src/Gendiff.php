@@ -12,36 +12,31 @@ function gendiff($pathToFile1, $pathToFile2, $format)
 {
     $file1Content = getContent($pathToFile1);
     $file2Content = getContent($pathToFile2);
-    if (!is_null($file1Content) && !is_null($file2Content)) {
-        $ast = makeDiffAst($file1Content, $file2Content);
-    } else {
-        return;
-    }
 
-    return selectRender($ast, $format);
+    $content1 = validateContent($file1Content);
+    $content2 = validateContent($file2Content);
+
+    if (!is_null($content1) && !is_null($content2)) {
+        $ast = makeDiffAst($content1, $content2);
+        return selectRender($ast, $format);
+    }
 }
 
 function getContent($pathToFile)
 {
     if (file_exists($pathToFile)) {
-        if (isJsonFile($pathToFile)) {
-            $fileContent = json_decode(file_get_contents($pathToFile), true);
-            return $fileContent;
-        } else {
-            try {
-                $fileContent = Yaml::parseFile($pathToFile);
-                return $fileContent;
-            } catch (ParseException $exception) {
-            }
-        }
+        $fileContent = file_get_contents($pathToFile);
+        return $fileContent;
     }
 }
 
-function isJsonFile($pathToFile)
+function validateContent($content)
 {
-    $fileContent = json_decode(file_get_contents($pathToFile));
-    if (json_last_error() === 0) {
-            return true;
+    if (!is_null($content)) {
+        try {
+            return Yaml::parse($content);
+        } catch (ParseException $exception) {
+            return json_decode($content, true);
+        }
     }
-    return false;
 }

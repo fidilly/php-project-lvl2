@@ -9,7 +9,7 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
 {
     $removedContent = array_diff_key($contentBeforeChange, $contentAfterChange);
     $addedContent = array_diff_key($contentAfterChange, $contentBeforeChange);
-    $overallKeys = union(array_keys($contentBeforeChange), array_keys($addedContent));
+    $allKeys = union(array_keys($contentBeforeChange), array_keys($addedContent));
 
     $makeDiff = function ($acc, $key) use ($contentBeforeChange, $contentAfterChange, $removedContent, $addedContent) {
         if (array_key_exists($key, $removedContent)) {
@@ -24,7 +24,7 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
                       'before' => null,
                       'after' => $addedContent[$key]];
             return $acc;
-        } elseif (array_key_exists($key, $contentAfterChange) || array_key_exists($key, $contentBeforeChange)) {
+        } elseif (array_key_exists($key, $contentAfterChange) && array_key_exists($key, $contentBeforeChange)) {
             $before = $contentBeforeChange[$key];
             $after = $contentAfterChange[$key];
             if (is_array($before) && is_array($after)) {
@@ -44,6 +44,6 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
         }
     };
 
-    $diffAst = array_reduce($overallKeys, $makeDiff, []);
+    $diffAst = array_reduce($allKeys, $makeDiff, []);
     return $diffAst;
 }

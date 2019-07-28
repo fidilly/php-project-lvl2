@@ -38,14 +38,13 @@ function renderValue($value, $depth)
     if (is_array($value)) {
         $tabs = "\n" . str_repeat('    ', $depth + 1);
         $array = $value;
-        $reduced = array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs) {
+        return array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs) {
             if (is_array($array[$key])) {
                 return renderValue($array[$key], $depth + 1);
             } else {
                 return $acc . $tabs . "    $key: " . boolToString($array[$key]);
             }
-        }, "{");
-        return $reduced . "$tabs}";
+        }, "{") . "$tabs}";
     } else {
         return boolToString($value);
     }
