@@ -3,7 +3,8 @@
 namespace Differ\Gendiff;
 
 use function Differ\MakeDiffAst\makeDiffAst;
-use function Differ\DisplayDiff\displayDiff;
+use function Differ\Renderers\pretty\render;
+use function Differ\SelectRender\selectRender;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -16,7 +17,8 @@ function gendiff($pathToFile1, $pathToFile2, $format)
     } else {
         return;
     }
-    return displayDiff($ast, $format);
+
+    return selectRender($ast, $format);
 }
 
 function getContent($pathToFile)
