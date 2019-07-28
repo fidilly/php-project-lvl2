@@ -4,12 +4,9 @@ namespace Differ\SelectRender;
 
 function selectRender($ast, $format)
 {
-    if ($format === 'pretty') {
-        return \Differ\Renderers\pretty\render($ast);
-    } elseif ($format === 'plain') {
-        return \Differ\Renderers\plain\render($ast);
-    } elseif ($format === 'json') {
-        return \Differ\Renderers\json\render($ast);
+    $renderPath = "\Differ\Renderers\\$format\\render";
+    if (function_exists($renderPath)) {
+        return $renderPath($ast);
     } else {
         return \Differ\Renderers\pretty\render($ast);
     }
