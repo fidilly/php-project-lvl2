@@ -24,7 +24,7 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
                       'before' => null,
                       'after' => $addedContent[$key]];
             return $acc;
-        } elseif (array_key_exists($key, $contentAfterChange)) {
+        } elseif (array_key_exists($key, $contentAfterChange) || array_key_exists($key, $contentBeforeChange)) {
             $before = $contentBeforeChange[$key];
             $after = $contentAfterChange[$key];
             if (is_array($before) && is_array($after)) {
