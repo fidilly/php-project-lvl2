@@ -7,7 +7,7 @@ namespace Differ\Renderers\pretty;
 function render($ast, $depth = 0)
 {
     $tabs = "\n" . str_repeat('    ', $depth);
-    $rendering = array_reduce($ast, function ($acc, $item) use ($tabs, $depth) {
+    return array_reduce($ast, function ($acc, $item) use ($tabs, $depth) {
         $type = $item['type'];
         $key = $item['key'];
         $before = $item['before'];
@@ -31,7 +31,6 @@ function render($ast, $depth = 0)
             return $acc . $tabs . "  - $key: $before";
         }
     }, "{") . "$tabs}";
-    return $rendering;
 }
 
 function renderValue($value, $depth)

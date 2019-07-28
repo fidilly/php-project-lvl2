@@ -3,14 +3,15 @@
 namespace Differ\MakeDiffAst;
 
 use function Differ\getContents;
+use function Funct\Collection\union;
 
-function makeDiffAst($ContentBeforeChange, $ContentAfterChange)
+function makeDiffAst($contentBeforeChange, $contentAfterChange)
 {
-    $removedContent = array_diff_key($ContentBeforeChange, $ContentAfterChange);
-    $addedContent = array_diff_key($ContentAfterChange, $ContentBeforeChange);
-    $overallContent = array_merge($ContentBeforeChange, $addedContent);
+    $removedContent = array_diff_key($contentBeforeChange, $contentAfterChange);
+    $addedContent = array_diff_key($contentAfterChange, $contentBeforeChange);
+    $overallKeys = union(array_keys($contentBeforeChange), array_keys($addedContent));
 
-    $makeDiff = function ($acc, $key) use ($overallContent, $ContentAfterChange, $removedContent, $addedContent) {
+    $makeDiff = function ($acc, $key) use ($contentBeforeChange, $contentAfterChange, $removedContent, $addedContent) {
         if (array_key_exists($key, $removedContent)) {
             $acc[] = ['type' => 'removed',
                       'key' => $key,
@@ -23,9 +24,9 @@ function makeDiffAst($ContentBeforeChange, $ContentAfterChange)
                       'before' => null,
                       'after' => $addedContent[$key]];
             return $acc;
-        } elseif (array_key_exists($key, $ContentAfterChange)) {
-            $before = $overallContent[$key];
-            $after = $ContentAfterChange[$key];
+        } elseif (array_key_exists($key, $contentAfterChange)) {
+            $before = $contentBeforeChange[$key];
+            $after = $contentAfterChange[$key];
             if (is_array($before) && is_array($after)) {
                 $acc[] = ['type' => 'nested',
                           'key' => $key,
@@ -43,6 +44,6 @@ function makeDiffAst($ContentBeforeChange, $ContentAfterChange)
         }
     };
 
-    $diffAst = array_reduce(array_keys($overallContent), $makeDiff, []);
+    $diffAst = array_reduce($overallKeys, $makeDiff, []);
     return $diffAst;
 }

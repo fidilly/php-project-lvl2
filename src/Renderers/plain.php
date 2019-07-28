@@ -4,7 +4,7 @@ namespace Differ\Renderers\plain;
 
 function render($ast, $depth = 0, $keyAcc = '')
 {
-    $rendering = array_reduce($ast, function ($acc, $item) use ($depth, $keyAcc) {
+    return array_reduce($ast, function ($acc, $item) use ($depth, $keyAcc) {
         $text = $depth === 0 ? "Property '" : "Property '$keyAcc";
         $type = $item['type'];
         $key = $item['key'];
@@ -27,7 +27,6 @@ function render($ast, $depth = 0, $keyAcc = '')
             return $acc . $text . "$key' was $type. From '" . $before . "' to '" . $after . "'\n";
         }
     }, "");
-    return $rendering;
 }
 
 function boolToString($value)
