@@ -13,30 +13,30 @@ function gendiff($pathToFile1, $pathToFile2, $format)
     $file1Content = getContent($pathToFile1);
     $file2Content = getContent($pathToFile2);
 
-    $content1 = validateContent($file1Content);
-    $content2 = validateContent($file2Content);
+    $content1 = parseContent($file1Content);
+    $content2 = parseContent($file2Content);
 
-    if (!is_null($content1) && !is_null($content2)) {
-        $ast = makeDiffAst($content1, $content2);
-        return selectRender($ast, $format);
+    if (is_null($content1) || is_null($content2)) {
+        throw new \Exception("Wrong file format");
     }
+    $ast = makeDiffAst($content1, $content2);
+    return selectRender($ast, $format);
 }
 
 function getContent($pathToFile)
 {
-    if (file_exists($pathToFile)) {
-        $fileContent = file_get_contents($pathToFile);
-        return $fileContent;
+    if (!file_exists($pathToFile)) {
+        throw new \Exception('File not found');
     }
+    $fileContent = file_get_contents($pathToFile);
+    return $fileContent;
 }
 
-function validateContent($content)
+function parseContent($content)
 {
-    if (!is_null($content)) {
-        try {
-            return Yaml::parse($content);
-        } catch (ParseException $exception) {
-            return json_decode($content, true);
-        }
+    try {
+        return Yaml::parse($content);
+    } catch (ParseException $exception) {
+        return json_decode($content, true);
     }
 }

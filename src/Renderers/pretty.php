@@ -38,7 +38,7 @@ function renderValue($value, $depth)
     if (is_array($value)) {
         $tabs = "\n" . str_repeat('    ', $depth + 1);
         $array = $value;
-        return array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs) {
+        return array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs, $depth) {
             if (is_array($array[$key])) {
                 return renderValue($array[$key], $depth + 1);
             } else {
