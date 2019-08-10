@@ -15,13 +15,11 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
         if (array_key_exists($key, $removedContent)) {
             $acc[] = ['type' => 'removed',
                       'key' => $key,
-                      'before' => $removedContent[$key],
-                      'after' => null];
+                      'before' => $removedContent[$key]];
             return $acc;
         } elseif (array_key_exists($key, $addedContent)) {
             $acc[] = ['type' => 'added',
                       'key' => $key,
-                      'before' => null,
                       'after' => $addedContent[$key]];
             return $acc;
         } elseif (array_key_exists($key, $contentAfterChange) && array_key_exists($key, $contentBeforeChange)) {
@@ -30,7 +28,6 @@ function makeDiffAst($contentBeforeChange, $contentAfterChange)
             if (is_array($before) && is_array($after)) {
                 $acc[] = ['type' => 'nested',
                           'key' => $key,
-                          'before' => null,
                           'after' => makeDiffAst($before, $after)];
                 return $acc;
             } else {

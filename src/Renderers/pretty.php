@@ -10,24 +10,22 @@ function render($ast, $depth = 0)
     return array_reduce($ast, function ($acc, $item) use ($tabs, $depth) {
         $type = $item['type'];
         $key = $item['key'];
-        $before = $item['before'];
-        $after = $item['after'];
 
         if ($type === 'nested') {
             $after = render($item['after'], $depth + 1);
             return $acc . $tabs . "    $key: $after";
         } elseif ($type === 'unchanged') {
-            $after = renderValue($after, $depth);
+            $after = renderValue($item['after'], $depth);
             return $acc . $tabs . "    $key: $after";
         } elseif ($type === 'changed') {
-            $before = renderValue($before, $depth);
-            $after = renderValue($after, $depth);
+            $before = renderValue($item['before'], $depth);
+            $after = renderValue($item['after'], $depth);
             return $acc . $tabs . "  + $key: $after" . $tabs . "  - $key: $before";
         } elseif ($type === 'added') {
-            $after = renderValue($after, $depth);
+            $after = renderValue($item['after'], $depth);
             return $acc . $tabs . "  + $key: $after";
         } elseif ($type === 'removed') {
-            $before = renderValue($before, $depth);
+            $before = renderValue($item['before'], $depth);
             return $acc . $tabs . "  - $key: $before";
         }
     }, "{") . "$tabs}";

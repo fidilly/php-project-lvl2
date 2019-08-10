@@ -8,8 +8,6 @@ function render($ast, $depth = 0, $keyAcc = '')
         $text = $depth === 0 ? "Property '" : "Property '$keyAcc";
         $type = $item['type'];
         $key = $item['key'];
-        $before = boolToString($item['before']);
-        $after = boolToString($item['after']);
 
         if ($type === 'nested') {
             $after = render($item['after'], $depth + 1, $keyAcc . "$key.");
@@ -19,12 +17,12 @@ function render($ast, $depth = 0, $keyAcc = '')
         } elseif ($type === 'removed') {
             return $acc . $text . "$key' was $type\n";
         } elseif ($type === 'added') {
-            if (is_array($after)) {
+            if (is_array(boolToString($item['after']))) {
                 return $acc . $text . "$key' was $type with value: 'complex value'\n";
             }
-            return $acc . $text . "$key' was $type with value: '" . $after . "'\n";
+            return $acc . $text . "$key' was $type with value: '" . boolToString($item['after']) . "'\n";
         } elseif ($type === 'changed') {
-            return $acc . $text . "$key' was $type. From '" . $before . "' to '" . $after . "'\n";
+            return $acc . $text . "$key' was $type. From '" . boolToString($item['before']) . "' to '" . boolToString($item['after']) . "'\n";
         }
     }, "");
 }
