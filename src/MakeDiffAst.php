@@ -7,20 +7,17 @@ use function Funct\Collection\union;
 
 function makeDiffAst($contentBeforeChange, $contentAfterChange)
 {
-    $removedContent = array_diff_key($contentBeforeChange, $contentAfterChange);
-    $addedContent = array_diff_key($contentAfterChange, $contentBeforeChange);
-    $allKeys = union(array_keys($contentBeforeChange), array_keys($addedContent));
-
-    $makeDiff = function ($acc, $key) use ($contentBeforeChange, $contentAfterChange, $removedContent, $addedContent) {
-        if (array_key_exists($key, $removedContent)) {
+    $allKeys = union(array_keys($contentBeforeChange), array_keys($contentAfterChange));
+    $makeDiff = function ($acc, $key) use ($contentBeforeChange, $contentAfterChange) {
+        if (array_key_exists($key, $contentBeforeChange) && !array_key_exists($key, $contentAfterChange)) {
             $acc[] = ['type' => 'removed',
                       'key' => $key,
-                      'before' => $removedContent[$key]];
+                      'before' => $contentBeforeChange[$key]];
             return $acc;
-        } elseif (array_key_exists($key, $addedContent)) {
+        } elseif (array_key_exists($key, $contentAfterChange) && !array_key_exists($key, $contentBeforeChange)) {
             $acc[] = ['type' => 'added',
                       'key' => $key,
-                      'after' => $addedContent[$key]];
+                      'after' => $contentAfterChange[$key]];
             return $acc;
         } elseif (array_key_exists($key, $contentAfterChange) && array_key_exists($key, $contentBeforeChange)) {
             $before = $contentBeforeChange[$key];

@@ -4,29 +4,36 @@ namespace Differ\Renderers\plain;
 
 function render($ast, $depth = 0, $keyAcc = '')
 {
-    return array_reduce($ast, function ($acc, $item) use ($depth, $keyAcc) {
+    $composeText = array_reduce($ast, function ($acc, $item) use ($depth, $keyAcc) {
         $text = $depth === 0 ? "Property '" : "Property '$keyAcc";
         $type = $item['type'];
         $key = $item['key'];
         
         switch ($type) {
             case 'nested':
-                $after = render($item['after'], $depth + 1, $keyAcc . "$key.");
-                return $acc . $after;
+                $acc[] = render($item['after'], $depth + 1, $keyAcc . "$key.");
+                return $acc;
             case 'unchanged':
                 return $acc;
             case 'removed':
-                return $acc . $text . "$key' was $type\n";
+                $acc[] = "$text$key' was $type";
+                return $acc;
             case 'added':
-                if (is_array(boolToString($item['after']))) {
-                    return $acc . $text . "$key' was $type with value: 'complex value'\n";
+                $after = boolToString($item['after']);
+                if (is_array($after)) {
+                    $acc[] = "$text$key' was $type with value: 'complex value'";
+                } else {
+                    $acc[] = "$text$key' was $type with value: '$after'";
                 }
-                return $acc . $text . "$key' was $type with value: '" . boolToString($item['after']) . "'\n";
+                return $acc;
             case 'changed':
-                $part = boolToString($item['before']) . "' to '" . boolToString($item['after']) . "'\n";
-                return $acc . $text . "$key' was $type. From '" . $part;
+                $before = boolToString($item['before']);
+                $after = boolToString($item['after']);
+                $acc[] = "$text$key' was $type. From '$before' to '$after'";
+                return $acc;
         }
-    }, "");
+    }, []);
+    return implode($composeText, "\n");
 }
 
 function boolToString($value)
