@@ -45,13 +45,16 @@ function renderValue($value, $depth)
 
     $tabs = "\n" . str_repeat('    ', $depth + 1);
     $array = $value;
-    return array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs, $depth) {
+    $composeText = array_reduce(array_keys($array), function ($acc, $key) use ($array, $tabs, $depth) {
         if (is_array($array[$key])) {
-            return renderValue($array[$key], $depth + 1);
+            $acc[] = renderValue($array[$key], $depth + 1);
+            return $acc;
         } else {
-            return $acc . $tabs . "    $key: " . boolToString($array[$key]);
+            $acc[] = "$tabs    $key: " . boolToString($array[$key]);
+            return $acc;
         }
-    }, "{") . "$tabs}";
+    }, []);
+    return "{" . implode($composeText, "\n") . "$tabs}";
 }
 
 function boolToString($value)
