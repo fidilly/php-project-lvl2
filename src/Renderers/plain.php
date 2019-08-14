@@ -19,16 +19,12 @@ function render($ast, $depth = 0, $keyAcc = '')
                 $acc[] = "$text$key' was $type";
                 return $acc;
             case 'added':
-                $after = boolToString($item['after']);
-                if (is_array($after)) {
-                    $acc[] = "$text$key' was $type with value: 'complex value'";
-                } else {
-                    $acc[] = "$text$key' was $type with value: '$after'";
-                }
+                $after = stringify($item['after']);
+                $acc[] = "$text$key' was $type with value: '$after'";
                 return $acc;
             case 'changed':
-                $before = boolToString($item['before']);
-                $after = boolToString($item['after']);
+                $before = stringify($item['before']);
+                $after = stringify($item['after']);
                 $acc[] = "$text$key' was $type. From '$before' to '$after'";
                 return $acc;
         }
@@ -36,11 +32,13 @@ function render($ast, $depth = 0, $keyAcc = '')
     return implode($composeText, "\n");
 }
 
-function boolToString($value)
+function stringify($value)
 {
-    if (is_bool($value)) {
-        return $value ? 'true' : 'false';
-    } else {
+    if (!is_bool($value) && !is_array($value)) {
         return $value;
+    } elseif (is_bool($value)) {
+        return $value ? 'true' : 'false';
+    } elseif (is_array($value)) {
+        return 'complex value';
     }
 }
