@@ -19,7 +19,7 @@ Options:
     -v --version      Show version.
 DOC;
     
-    $args = Docopt::handle($doc, ['version' => 'gendiff 3.0.2']);
+    $args = Docopt::handle($doc, ['version' => 'gendiff 3.0.3']);
     $pathToFile1 = realpath($args['<firstFile>']);
     $pathToFile2 = realpath($args['<secondFile>']);
     $format = $args['--format'];

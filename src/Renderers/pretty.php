@@ -40,7 +40,7 @@ function render($ast, $depth = 0)
 function renderValue($value, $depth)
 {
     if (!is_array($value)) {
-        return boolToString($value);
+        return stringify($value);
     }
 
     $tabs = "\n" . str_repeat('    ', $depth + 1);
@@ -50,14 +50,14 @@ function renderValue($value, $depth)
             $acc[] = renderValue($array[$key], $depth + 1);
             return $acc;
         } else {
-            $acc[] = "$tabs    $key: " . boolToString($array[$key]);
+            $acc[] = "$tabs    $key: " . stringify($array[$key]);
             return $acc;
         }
     }, []);
     return "{" . implode($composeText, "\n") . "$tabs}";
 }
 
-function boolToString($value)
+function stringify($value)
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
